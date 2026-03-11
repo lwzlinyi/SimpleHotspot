@@ -1,0 +1,49 @@
+# .github/workflows/android_fixed.yml
+name: Android Build
+
+on:
+push:
+branches: [ main, master ]
+pull_request:
+branches: [ main, master ]
+workflow_dispatch:
+
+jobs:
+build:
+runs-on: ubuntu-latest
+
+steps:
+- uses: actions/checkout@v4 # 也可升级到 v4
+
+- name: Set up JDK 17
+uses: actions/setup-java@v4
+with:
+java-version: '17'
+distribution: 'temurin'
+
+- name: Setup Android SDK
+uses: android-actions/setup-android@v2
+with:
+sdk-version: '30'
+build-tools-version: '30.0.3'
+
+- name: Cache Gradle packages
+uses: actions/cache@v3
+with:
+path: |
+~/.gradle/caches
+~/.gradle/wrapper
+key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+restore-keys: |
+${{ runner.os }}-gradle-
+
+- name: Build with System Gradle
+run: |
+# 使用系统已有的 Gradle 7.5+（无需 gradlew）
+gradle clean assembleRelease
+
+- name: Upload APK
+uses: actions/upload-artifact@v4 # ↑ 已升级到 v4
+with:
+name: CarHotspotAPK
+path: app/build/outputs/apk/release/*.apk
