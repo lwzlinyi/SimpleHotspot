@@ -1,3 +1,8 @@
+> [!WARNING]
+> **已归档（2026-11-23）**：未完成构建的车载热点 Xposed 模块草稿，不再维护。详情见 [ARCHIVED.md](ARCHIVED.md)。
+>
+> ---
+
 # Car Hotspot Xposed Module
 
 这是一个基于Xposed框架的车载蓝牙自动热点开启模块。
